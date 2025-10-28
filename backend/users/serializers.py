@@ -37,7 +37,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         storage_path = f'user_files/{validated_data['username']}'
         validated_data['storage_path'] = storage_path
         user = User.objects.create(**validated_data)
-        os.makedirs(os.path.join(settings.File_STORAGE_PATH,storage_path), exist_ok=True)
+        os.makedirs(os.path.join(settings.FILE_STORAGE_PATH,storage_path), exist_ok=True)
 
         return user
     
@@ -47,9 +47,11 @@ class LoginSerializer(serializers.Serializer):
 
     def validate(self, data):
         username = data.get('username')
+        print(username)
         password = data.get('password')
         if username and password:
             user = authenticate(username=username, password=password)
+            print(user)
             if user:
                 if not user.is_active:
                     raise serializers.ValidationError('Аккаунт пользователя неактивен.')

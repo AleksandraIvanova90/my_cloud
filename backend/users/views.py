@@ -32,6 +32,7 @@ class LoginView(generics.GenericAPIView):
 
     def post(self,request):
         serializer = self.serializer_class(data=request.data)
+        print(serializer.is_valid)
         if serializer.is_valid(raise_exception=True):
             user = serializer.validated_data['user']
             token,created = Token.objects.get_or_create(user=user)
@@ -39,7 +40,8 @@ class LoginView(generics.GenericAPIView):
                 'token': token.key,
                 'user': UserSerializer(user).data
             }, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 @api_view(['POST'])
 @view_permission_classes([permissions.IsAuthenticated]) 
