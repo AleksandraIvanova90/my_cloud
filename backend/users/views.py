@@ -30,9 +30,8 @@ class LoginView(generics.GenericAPIView):
     serializer_class = LoginSerializer
     permission_classes = [permissions.AllowAny]
 
-    def post(self,request):
+    def post(self, request):
         serializer = self.serializer_class(data=request.data)
-        print(serializer.is_valid)
         if serializer.is_valid(raise_exception=True):
             user = serializer.validated_data['user']
             token,created = Token.objects.get_or_create(user=user)

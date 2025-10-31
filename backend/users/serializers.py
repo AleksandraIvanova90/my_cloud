@@ -33,10 +33,15 @@ class RegisterSerializer(serializers.ModelSerializer):
     
     def create(self, validated_data):
         # validated_data['password']
-        make_password(validated_data.get('password'))
+        password = validated_data.pop('password', None)
         storage_path = f'user_files/{validated_data['username']}'
         validated_data['storage_path'] = storage_path
-        user = User.objects.create(**validated_data)
+        user = User.objects.create(**validated_data) # Создаем пользователя с остальными данными
+
+        if password:  # Если пароль был передан
+            user.set_password(password) # Хешируем пароль и устанавливаем его пользователю
+            user.save() # Сохраняем пользователя с захешированным паролем
+
         os.makedirs(os.path.join(settings.FILE_STORAGE_PATH,storage_path), exist_ok=True)
 
         return user
@@ -47,7 +52,6 @@ class LoginSerializer(serializers.Serializer):
 
     def validate(self, data):
         username = data.get('username')
-        print(username)
         password = data.get('password')
         if username and password:
             user = authenticate(username=username, password=password)
