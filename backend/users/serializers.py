@@ -2,16 +2,17 @@ import os
 from rest_framework import serializers
 from django.contrib.auth import get_user_model, authenticate
 from django.core.validators import RegexValidator
-from django.contrib.auth.hashers import make_password
+
 
 from django.conf import settings
+from django.db import IntegrityError
 
 User = get_user_model()
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username', 'full_name', 'email', 'is_admin', 'storage_path')
+        fields = ('id', 'username', 'fullname', 'email', 'is_admin', 'storage_path')
         read_only_fields = ('id', 'storage_path', 'is_admin')
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -29,16 +30,18 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', 'password', 'full_name', 'email')
+        fields = ('username', 'password', 'fullname', 'email')
     
     def create(self, validated_data):
-        # validated_data['password']
         password = validated_data.pop('password', None)
         storage_path = f'user_files/{validated_data['username']}'
         validated_data['storage_path'] = storage_path
-        user = User.objects.create(**validated_data) # Создаем пользователя с остальными данными
+        try:
+            user = User.objects.create(**validated_data) 
+        except IntegrityError:
+            raise serializers.ValidationError({'username': ['Пользователь с таким логином уже существует.']})
 
-        if password:  # Если пароль был передан
+        if password:  
             user.set_password(password) # Хешируем пароль и устанавливаем его пользователю
             user.save() # Сохраняем пользователя с захешированным паролем
 

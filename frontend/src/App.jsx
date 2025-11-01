@@ -1,12 +1,14 @@
-import Login from './components/Login'
+import Login from './components/Auth/Login.jsx'
+import Register from './components/Auth/Register.jsx'
 import './App.css'
+import UserList from './components/Admin/UserList.jsx';
 
 function App() {
  
 
   const handleLoginSuccess = (data) => {
     // Сохраняем токен и информацию о пользователе в localStorage или state
-    console.log('Успешный вход:', data);
+    console.log('Успешный вход:', JSON.stringify(data.user));
     localStorage.setItem('token', data.token);
     localStorage.setItem('user', JSON.stringify(data.user));
   };
@@ -19,8 +21,11 @@ function App() {
 
   return (
     <div>
-      <h1>Форма входа</h1>
-      <Login onLoginSuccess={handleLoginSuccess} onError={handleLoginError} />
+      {/* <h1>Форма входа</h1> */}
+      {/* <Login onLoginSuccess={handleLoginSuccess} onError={handleLoginError} /> */}
+      <Register />
+      {/* {<UserList />} */}
+      {/* <Login /> */}
     </div>
   );
 }
