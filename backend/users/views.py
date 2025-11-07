@@ -1,10 +1,10 @@
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
+from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import get_user_model,logout
 from .serializers import UserSerializer, RegisterSerializer, LoginSerializer
 from .permissions import IsAdminUserOrReadOnly
-from django.shortcuts import get_object_or_404
 
 from rest_framework.decorators import api_view, permission_classes as view_permission_classes
 from django.utils import timezone
@@ -15,7 +15,8 @@ User = get_user_model()
 class UserList(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    # permission_classes = [permissions.IsAuthenticated, IsAdminUserOrReadOnly]
+    permission_classes = [IsAuthenticated] 
+    
 
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()

@@ -1,9 +1,12 @@
 const getAllUsers = async () => {
   try {
+
+    
     const token = localStorage.getItem('token');
-    const response = await fetch('http://127.0.0.1:8000/api/users',{
+    console.log('token:', token)
+    const response = await fetch('http://127.0.0.1:8000/api/users/users',{
         headers: {
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Token ${token}`
         }
     });
 
@@ -22,10 +25,10 @@ const getAllUsers = async () => {
 const deleteUser = async (id) => {
   try {
     const token = localStorage.getItem('token');
-    const response = await fetch('http://127.0.0.1:8000/api/users/${id}', {
+    const response = await fetch(`http://127.0.0.1:8000/api/users/${id}/`, {
       method: 'DELETE',
         headers: {
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Token ${token}`
         }
     });
 
@@ -40,29 +43,54 @@ const deleteUser = async (id) => {
   }
 };
 
+
 const updateUser = async (id, data) => {
   try {
     const token = localStorage.getItem('token');
-    const response = await fetch('http://127.0.0.1:8000/api/users/${id}', {
-      method: 'PUT', 
+    console.log(data)
+
+   
+    const response = await fetch(`http://127.0.0.1:8000/api/users/${id}/`, {
+      method: 'GET',
       headers: {
-        'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify(data),
+        'Authorization': `Token ${token}`
+      }
     });
 
     if (!response.ok) {
-        const message = await response.text();
+      const message = await response.text();
+      throw new Error(message || 'Не удалось получить информацию о пользователе.');
+    }
+
+    const user = await response.json();
+
+   
+    const updateData = {
+      ...data,
+      username: user.username 
+    };
+
+    const updateResponse = await fetch(`http://127.0.0.1:8000/api/users/${id}/`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${token}`
+      },
+      body: JSON.stringify(updateData),
+    });
+
+    if (!updateResponse.ok) {
+      const message = await updateResponse.text();
       throw new Error(message || 'Не удалось обновить пользователя.');
     }
-    return await response.json();
+    return await updateResponse.json();
 
   } catch (error) {
     console.error('Ошибка при обновлении пользователя:', error);
     throw error;
   }
-
 };
+
+
 
 export {getAllUsers, updateUser, deleteUser}

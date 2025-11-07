@@ -10,7 +10,7 @@ def generate_unique_filename(instance, filename):
 
 class File(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    origin_name = models.CharField(max_length=255)
+    origin_name= models.CharField(max_length=255)
     file = models.FileField(upload_to=generate_unique_filename)
     comment = models.TextField(blank=True)
     size = models.PositiveIntegerField(default=0)

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'
 import { register } from '../services/autoService.js'
 import {validateLogin, validateEmail, validatePassword} from '../ utils/validation.js';
-import ErrorMessage from '../Common/ErrorMessage.jsx';
+import ErrorMessage from '../common/ErrorMessage.jsx';
 
 function Register() {
 
@@ -11,10 +12,10 @@ function Register() {
     const [password, setPassword] = useState('');
     const [errors, setError] = useState({});
     const [successMessage, setSuccessMessage] = useState('')
+    const navigate = useNavigate()
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        // setLoading(true);
         setError({});
         setSuccessMessage('')
         const validationErrors = {
@@ -29,46 +30,11 @@ function Register() {
         try {
             const data = await register(username, fullname, email, password)
             setSuccessMessage('Регистрация прошла успешно.')
+            navigate('/api/users/login')
         } catch(err) {
             setError({form: 'Ошибка регистрации'})          
         }
-    };
-
-    //     try {
-    //         const response = await fetch('http://127.0.0.1:8000/api/users/register/', {
-    //             method: 'POST',
-    //             headers: {
-    //             'Content-Type': 'application/json',
-    //             },
-    //             body: JSON.stringify({ username, password, fullname, email}),
-    //         });
-
-    //         const data = await response.json();
-
-    //         console.log(data)
-
-    //         if (response.ok) {
-               
-    //             alert('User registered successfully!');
-    //         } else {
-               
-
-    //             console.log(data)
-    //             setError(data); 
-    //             if (onError) {
-    //             onError(data);
-    //             }
-    //         }
-    //     } catch (err) {
-            
-    //         setError({ message: 'Ошибка подключения к серверу' });
-    //         if (onError) {
-    //             onError({ message: 'Ошибка подключения к серверу' });
-    //         }
-    //         } finally {
-    //             setLoading(false);
-    //         }
-    
+    };  
 
     return (
         <>

@@ -1,4 +1,4 @@
-import os
+
 from rest_framework import serializers
 from django.contrib.auth import get_user_model, authenticate
 from django.core.validators import RegexValidator
@@ -6,14 +6,28 @@ from django.core.validators import RegexValidator
 
 from django.conf import settings
 from django.db import IntegrityError
+from files.models import File
 
 User = get_user_model()
 
 class UserSerializer(serializers.ModelSerializer):
+    file_count = serializers.SerializerMethodField()
+    total_size = serializers.SerializerMethodField()
+
     class Meta:
         model = User
-        fields = ('id', 'username', 'fullname', 'email', 'is_admin', 'storage_path')
-        read_only_fields = ('id', 'storage_path', 'is_admin')
+        fields = ('id', 'username', 'fullname', 'email', 'is_admin', 'storage_path', 'file_count', 'total_size')
+        read_only_fields = ('id', 'storage_path', 'file_count', 'total_size')
+
+    def get_file_count(self, obj):
+        """Возвращает количество файлов, принадлежащих пользователю."""
+        return File.objects.filter(user=obj).count() 
+
+    def get_total_size(self, obj):
+        """Возвращает общий размер файлов пользователя в байтах."""
+        files = File.objects.filter(user=obj) 
+        total_size = sum(file.file.size for file in files) 
+        return total_size
 
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True,required=True, validators=[RegexValidator(
@@ -42,10 +56,10 @@ class RegisterSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({'username': ['Пользователь с таким логином уже существует.']})
 
         if password:  
-            user.set_password(password) # Хешируем пароль и устанавливаем его пользователю
-            user.save() # Сохраняем пользователя с захешированным паролем
+            user.set_password(password)
+            user.save()
 
-        os.makedirs(os.path.join(settings.FILE_STORAGE_PATH,storage_path), exist_ok=True)
+        # os.makedirs(os.path.join(settings.FILE_STORAGE_PATH,storage_path), exist_ok=True)
 
         return user
     
@@ -58,7 +72,6 @@ class LoginSerializer(serializers.Serializer):
         password = data.get('password')
         if username and password:
             user = authenticate(username=username, password=password)
-            print(user)
             if user:
                 if not user.is_active:
                     raise serializers.ValidationError('Аккаунт пользователя неактивен.')

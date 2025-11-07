@@ -1,55 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom'
+import { AuthContext } from '../context/AuthContext.jsx'
 import {login} from '../services/autoService.js'
-import ErrorMessage from '../Common/ErrorMessage.jsx';
+import ErrorMessage from '../common/ErrorMessage.jsx';
 
 function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    // const [loading, setLoading] = useState(false);  
-    const [error, setError] = useState(null);
+    const [error, setError] = useState('');
+    const { setAuthInfo }= useContext(AuthContext)
+    const navigate = useNavigate()
     
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        // setLoading(true);
-        setError(null);
+        setError('');
 
         try {
             const data = await login(username, password);
-
-        } catch(err) {
+            console.log(data)
+            setAuthInfo(data.token, data.user)
+            if(data.user.is_admin) {
+                navigate('/admin')
+            } else {
+                navigate(`/files?user_id=${data.user.id}`)
+            }
+        } catch (err) {
             setError('Неверный логин или пароль.')
-        }
     }
-
-    //     try {
-    //     const response = await fetch('http://127.0.0.1:8000/api/users/login/', {
-    //         method: 'POST',
-    //         headers: {
-    //         'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify({ username, password }),
-    //     });
-
-    //     const data = await response.json();
-
-    //     if (response.ok) {
-    //         onLoginSuccess(data); 
-    //     } else {
-    //         setError(data); 
-    //         if (onError) {
-    //         onError(data); 
-    //         }
-    //     }
-    //     } catch (err) {
-    //         setError({ message: 'Ошибка подключения к серверу' });
-    //         if (onError) {
-    //             onError({ message: 'Ошибка подключения к серверу' });
-    //         }
-    //         } finally {
-    //             setLoading(false);
-    //         }
-    // };
+}
 
     return (
         <>
