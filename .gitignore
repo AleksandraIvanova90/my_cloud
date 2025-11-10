@@ -1,5 +1,10 @@
 user_files/
 __pycache__/
+__pycache__
+backend/files/__pycache__/
+backend/users/__pycache__/
+backend/files/__pycache__
+backend/users/__pycache__
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

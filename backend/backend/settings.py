@@ -164,3 +164,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # FILE_STORAGE_PATH = os.path.join(BASE_DIR, 'file_storage')
 # os.makedirs(FILE_STORAGE_PATH, exist_ok=True)
+
+SITE_URL = 'http://127.0.0.1:8000'  # Use environment variables

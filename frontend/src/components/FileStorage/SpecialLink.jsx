@@ -37,6 +37,7 @@ const SpecialLink = () => {
     };
 
     const handleCopyClick = () => {
+        
         navigator.clipboard.writeText(specialLink)
             .then(() => {
                 alert('Ссылка скопирована в буфер обмена!');
@@ -73,7 +74,7 @@ const SpecialLink = () => {
                     readOnly
                     className="form-control"
                 />
-                 <button onClick={handleCopyClick}>Копировать ссылку</button>
+                 <button onClick={handleCopyClick} disabled={!specialLink}>Копировать ссылку</button>
             </div>
             <button onClick={handleBack}>Назад</button>
         </div>

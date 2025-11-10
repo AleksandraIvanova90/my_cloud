@@ -17,15 +17,6 @@ function AuthProvider({ children }) {
 
     },[]);
 
-    // const setAuthInfo = (token, userData) => {
-    //     localStorage.setItem('token', token)
-    //     localStorage.setItem('user', JSON.stringify(userData))
-    //     setIsAuthenticated(true)
-    //     setUser({ ...userData, role: userData.role === 'administrator' ? 'admin' : userData.role });
-    //     setUser(userData)
-    //       console.log("setAuthInfo called with:", token, userData); 
-    // }
-
         const setAuthInfo = (token, user) => {
         localStorage.setItem('token', token)
         localStorage.setItem('user', JSON.stringify(user))

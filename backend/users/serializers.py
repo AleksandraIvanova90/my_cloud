@@ -59,8 +59,7 @@ class RegisterSerializer(serializers.ModelSerializer):
             user.set_password(password)
             user.save()
 
-        # os.makedirs(os.path.join(settings.FILE_STORAGE_PATH,storage_path), exist_ok=True)
-
+      
         return user
     
 class LoginSerializer(serializers.Serializer):

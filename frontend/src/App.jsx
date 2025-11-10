@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './components/context/AuthContext'
 import Navigation from './components/common/Navigation';
-// import Home from './components/Home';
+import Home from './components/Home.jsx';
 import Login from './components/Auth/Login.jsx'
 import Register from './components/Auth/Register';
 import UserList from './components/Admin/UserList';
@@ -19,7 +19,7 @@ function App() {
           <Navigation />
           <div className="content">
             <Routes>
-              {/* <Route path="/" element={<Home />} /> */}
+              <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/admin" element={<RequireAuth roles={[true]}><UserList /></RequireAuth>} />

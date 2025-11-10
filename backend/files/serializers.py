@@ -1,7 +1,9 @@
 from rest_framework import serializers
 from .models import File
+from django.urls import reverse
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ImproperlyConfigured 
 
 class FileSerializer(serializers.ModelSerializer):
     """
@@ -55,8 +57,27 @@ class FileUpdateSerializer(serializers.ModelSerializer):
         model = File
         fields = ['comment']
 
-class SpecialLinkSerializer(serializers.Serializer):
-    """
-    Сериализатор для создания специальных ссылок.
-    """
-    special_link = serializers.UUIDField(read_only=True)
+# class SpecialLinkSerializer(serializers.Serializer):
+#     """
+#     Сериализатор для создания специальных ссылок.
+#     """
+#     special_link = serializers.UUIDField(read_only=True)
+
+class SpecialLinkSerializer(serializers.ModelSerializer):
+    special_link = serializers.SerializerMethodField()
+
+    class Meta:
+        model = File
+        fields = ['special_link']
+
+    def get_special_link(self, obj):
+        print("get_special_link is being called!")
+        # use settings
+        base_url = settings.SITE_URL  # Define SITE_URL
+        print(base_url)
+        if not base_url:
+             raise ImproperlyConfigured("SITE_URL setting must be defined")
+        # Build full url
+        relative_url = reverse('download-via-link', kwargs={'special_link': obj.special_link})
+        absolute_url = self.context['request'].build_absolute_uri(relative_url)
+        return absolute_url
