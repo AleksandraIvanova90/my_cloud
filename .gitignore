@@ -1,10 +1,5 @@
 user_files/
-__pycache__/
 __pycache__
-backend/files/__pycache__/
-backend/users/__pycache__/
-backend/files/__pycache__
-backend/users/__pycache__
 logs/
 .pytest_cache/
 

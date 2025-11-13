@@ -1,13 +1,10 @@
 const getAllUsers = async () => {
   try {
-
-    
     const token = localStorage.getItem('token');
-    console.log('token:', token)
     const response = await fetch('http://127.0.0.1:8000/api/users/users',{
-        headers: {
-            'Authorization': `Token ${token}`
-        }
+      headers: {
+        'Authorization': `Token ${token}`
+      }
     });
 
     if (!response.ok) {
@@ -27,13 +24,13 @@ const deleteUser = async (id) => {
     const token = localStorage.getItem('token');
     const response = await fetch(`http://127.0.0.1:8000/api/users/${id}/`, {
       method: 'DELETE',
-        headers: {
-            'Authorization': `Token ${token}`
-        }
+      headers: {
+        'Authorization': `Token ${token}`
+      }
     });
 
     if (!response.ok) {
-        const message = await response.text();
+      const message = await response.text();
       throw new Error(message || 'Не удалось удалить пользователя.');
     }
 
@@ -43,13 +40,9 @@ const deleteUser = async (id) => {
   }
 };
 
-
 const updateUser = async (id, data) => {
   try {
     const token = localStorage.getItem('token');
-    console.log(data)
-
-   
     const response = await fetch(`http://127.0.0.1:8000/api/users/${id}/`, {
       method: 'GET',
       headers: {
@@ -61,7 +54,6 @@ const updateUser = async (id, data) => {
       const message = await response.text();
       throw new Error(message || 'Не удалось получить информацию о пользователе.');
     }
-
     const user = await response.json();
 
    
@@ -69,6 +61,8 @@ const updateUser = async (id, data) => {
       ...data,
       username: user.username 
     };
+
+    console.log(updateData);
 
     const updateResponse = await fetch(`http://127.0.0.1:8000/api/users/${id}/`, {
       method: 'PUT',
@@ -93,4 +87,4 @@ const updateUser = async (id, data) => {
 
 
 
-export {getAllUsers, updateUser, deleteUser}
+export {getAllUsers, updateUser, deleteUser};

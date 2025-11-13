@@ -2,17 +2,17 @@ const getFiles = async (userId) => {
   try {
     const token = localStorage.getItem('token');
     let url = 'http://127.0.0.1:8000/api/files/list';
-        if (userId) {
-            url += `?user_id=${userId}`;  
-        }
-        const response = await fetch(url, {
-            headers: {
-                'Authorization': `Token ${token}`
-            }
+    if (userId) {
+      url += `?user_id=${userId}`;  
+    }
+    const response = await fetch(url, {
+      headers: {
+        'Authorization': `Token ${token}`
+      }
     });
 
     if (!response.ok) {
-        const message = await response.text();
+      const message = await response.text();
       throw new Error(message || 'Не удалось получить список файлов.');
     }
     return await response.json();
@@ -24,30 +24,30 @@ const getFiles = async (userId) => {
 
 };
 
-const getFileData = async (id) => {
-            
-    try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`http://127.0.0.1:8000/api/files/${id}/`, { 
-          headers: {
-              'Authorization': `Token ${token}`
-          }
-      });
-      if (!response.ok) {
-            const message = await response.text();
-              throw new Error(message || 'Не удалось получить данные файла.')
+const getFileData = async (id) => {   
+  try {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`http://127.0.0.1:8000/api/files/${id}/`, { 
+      headers: {
+        'Authorization': `Token ${token}`
       }
-      return await response.json();
-               
-    } catch (error) {
-      console.error('Ошибка при получении данныч файла:', error);
-      throw error;
+    });
+    if (!response.ok) {
+      const message = await response.text();
+      throw new Error(message || 'Не удалось получить данные файла.');
     }
+    return await response.json();
+               
+  } catch (error) {
+    console.error('Ошибка при получении данныч файла:', error);
+    throw error;
+  }
 };
 
 const uploadFile = async (formData) => {
 
   try {
+    console.log(formData);
     const token = localStorage.getItem('token');
     const response = await fetch('http://127.0.0.1:8000/api/files/list/', {
       method: 'POST',
@@ -58,7 +58,7 @@ const uploadFile = async (formData) => {
     });
 
     if (!response.ok) {
-        const message = await response.text();
+      const message = await response.text();
       throw new Error(message || 'Не удалось загрузить файл.');
     }
     return await response.json();
@@ -70,19 +70,18 @@ const uploadFile = async (formData) => {
 
 const renameFile = async (id, data) => {
   try {
-    console.log(data)
     const token = localStorage.getItem('token');
     const response = await fetch(`http://127.0.0.1:8000/api/files/${id}/rename/`, {
       method: 'PATCH',
       headers: {
-         'Content-Type': 'application/json',
+        'Content-Type': 'application/json',
         'Authorization': `Token ${token}`
       },
       body: JSON.stringify({ 'origin_name': data })
   
     });
     if (!response.ok) {
-        const message = await response.text();
+      const message = await response.text();
       throw new Error(message || 'Не удалось изменить имя файла.');
     }
     return await response.json();
@@ -94,19 +93,18 @@ const renameFile = async (id, data) => {
 
 const editComment = async (id, data) => {
   try {
-    console.log(data)
     const token = localStorage.getItem('token');
     const response = await fetch(`http://127.0.0.1:8000/api/files/${id}/`, {
       method: 'PATCH',
       headers: {
-         'Content-Type': 'application/json',
+        'Content-Type': 'application/json',
         'Authorization': `Token ${token}`
       },
       body: JSON.stringify({ 'comment': data })
   
     });
     if (!response.ok) {
-        const message = await response.text();
+      const message = await response.text();
       throw new Error(message || 'Не удалось изменить комментарий.');
     }
     return await response.json();
@@ -127,7 +125,7 @@ const deleteFile = async (id) => {
     });
 
     if (!response.ok) {
-        const message = await response.text();
+      const message = await response.text();
       throw new Error(message || 'Не удалось удалить файл.');
     }
   } catch (error) {
@@ -159,71 +157,68 @@ const downloadFile = async (id) => {
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    console.log(response.headers.keys())
 
     const contentDisposition = response.headers.get('Content-Disposition'); 
-    console.log(contentDisposition.split('filename=')[1]);  
-
+    
     let filename = 'downloaded_file';
     if (contentDisposition && contentDisposition.includes('filename=')) {
-        const filenameMatch = contentDisposition.split('filename=')[1];
-        if (filenameMatch) {
-          try {
-            filename = decodeURIComponent(filenameMatch.replace(/['"]/g, ''));
-          } catch (error) {
-            console.error("Ошибка декодирования имени файла:", error);
-            filename = 'downloaded_file';
-          }
+      const filenameMatch = contentDisposition.split('filename=')[1];
+      if (filenameMatch) {
+        try {
+          filename = decodeURIComponent(filenameMatch.replace(/['"]/g, ''));
+        } catch (error) {
+          console.error('Ошибка декодирования имени файла:', error);
+          filename = 'downloaded_file';
         }
+      }
     }
-        a.download = filename;
+    a.download = filename;
     document.body.appendChild(a);
     a.click();
     a.remove();
     window.URL.revokeObjectURL(url);
 
-    
     const urlParams = new URLSearchParams(window.location.search);
     const returnUrl = urlParams.get('return_url');
 
     if (returnUrl) {
-        window.location.href = decodeURIComponent(returnUrl); 
+      window.location.href = decodeURIComponent(returnUrl); 
     }
 
   } catch (error) {
     console.error('Ошибка при скачивании файла:', error);
-      const urlParams = new URLSearchParams(window.location.search);
-      const returnUrl = urlParams.get('return_url');
+    const urlParams = new URLSearchParams(window.location.search);
+    const returnUrl = urlParams.get('return_url');
 
-      if (returnUrl) {
-          window.location.href = decodeURIComponent(returnUrl); 
-      }
+    if (returnUrl) {
+      window.location.href = decodeURIComponent(returnUrl); 
+    }
     throw error;
   }
 };
 
 const getSpecialLink = async (id) => {
   try {
-     const token = localStorage.getItem('token');
-            const response = await fetch(`http://127.0.0.1:8000/api/files/${id}/special_link/`, {
-                headers: {
-                    'Authorization': `Token ${token}`
-                }
+    const token = localStorage.getItem('token');
+    const response = await fetch(`http://127.0.0.1:8000/api/files/${id}/special_link/`, {
+      headers: {
+        'Authorization': `Token ${token}`
+      }
     });
 
     if (!response.ok) {
-            const message = await response.text();
-              throw new Error(message || 'Не удалось пполучить специальную ссылку.')
-      }
-      return await response.json();
-               
-    } catch (error) {
-      console.error('Ошибка при получении специальной ссылки:', error);
-      throw error;
+      const message = await response.text();
+      throw new Error(message || 'Не удалось пполучить специальную ссылку.');
     }
+    return await response.json();
+               
+  } catch (error) {
+    console.error('Ошибка при получении специальной ссылки:', error);
+    throw error;
+  }
 };
 
 
 
 
-export {getFiles, getFileData, editComment, renameFile, uploadFile, deleteFile, downloadFile, getSpecialLink}
+export {getFiles, getFileData, editComment, renameFile, uploadFile, deleteFile, downloadFile, getSpecialLink};

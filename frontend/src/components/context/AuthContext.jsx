@@ -1,49 +1,58 @@
 
-import React, { createContext, useEffect, useState, useContext } from 'react'
+import React, { createContext, useEffect, useState, useContext } from 'react';
 
-const AuthContext = createContext()
+const AuthContext = createContext();
 
 function AuthProvider({ children }) {
-    const [isAuthenticated, setIsAuthenticated] = useState(false)
-    const [user, setUser] = useState(null)
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const storedToken = localStorage.getItem('token')
-        const storedUser = localStorage.getItem('user')
-        if (storedToken && storedUser) {
-            setIsAuthenticated(true)
-            setUser(JSON.parse(storedUser))
-        }
+  useEffect(() => {
+    const storedToken = localStorage.getItem('token');
+    const storedUser = localStorage.getItem('user');
 
-    },[]);
-
-        const setAuthInfo = (token, user) => {
-        localStorage.setItem('token', token)
-        localStorage.setItem('user', JSON.stringify(user))
-        setIsAuthenticated(true)
-        setUser({ ...user, role: user.role === 'administrator' ? 'admin' : user.role });
-        setUser(user)
-          console.log("setAuthInfo called with:", token, user); 
+    if (storedToken && storedUser) {
+      try {
+        const parsedUser = JSON.parse(storedUser);
+        setIsAuthenticated(true);
+        setUser(parsedUser);
+      } catch (error) {
+        console.error('Ошибка при парсинге пользователя из localStorage:', error);
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        setIsAuthenticated(false);
+        setUser(null);
+      }
     }
+    setLoading(false); 
+  }, []);
 
-    const logout = () => {
-        localStorage.removeItem('token')
-        localStorage.removeItem('user')
-        setIsAuthenticated(false)
-        setUser(null)
-        
-    }
+  const setAuthInfo = (token, user) => {
+    localStorage.setItem('token', token);
+    localStorage.setItem('user', JSON.stringify(user));
+    setIsAuthenticated(true);
+    setUser(user);
+  };
 
-    return (
-        <AuthContext.Provider value={{ isAuthenticated, user, setAuthInfo, logout }}>
-            {children}
-        </AuthContext.Provider>
-    )
-    
+  const logout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    setIsAuthenticated(false);
+    setUser(null);
+  };
+
+  const value = { isAuthenticated, user, setAuthInfo, logout, loading };
+
+  return (
+    <AuthContext.Provider value={value}>
+      {loading ? <div>Загрузка...</div> : children} 
+    </AuthContext.Provider>
+  );
 }
 
 const useAuth = () => {
-    return useContext(AuthContext);
+  return useContext(AuthContext);
 };
 
-export { AuthContext, AuthProvider, useAuth }
+export { AuthContext, AuthProvider, useAuth };

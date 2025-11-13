@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 import os
+import sys
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -166,3 +167,59 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # os.makedirs(FILE_STORAGE_PATH, exist_ok=True)
 
 SITE_URL = 'http://127.0.0.1:8000'  # Use environment variables
+
+if not os.path.exists(os.path.join(BASE_DIR, 'logs')):
+    os.makedirs(os.path.join(BASE_DIR, 'logs'))
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
+        },
+         'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/debug.log'),  # Укажите путь к файлу
+            'formatter': 'verbose'
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'users': {  # Логгер для users
+            'handlers': ['console', 'file'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),  # Уровень логирования из переменной окружения или INFO по умолчанию
+            'propagate': True,  # Передавать логи вышестоящим логгерам
+        },
+        'files': {  # Логгер для files
+            'handlers': ['console', 'file'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+            'propagate': True,
+        },
+    },
+}
+
+
+TESTING_MEDIA_ROOT = os.path.join(BASE_DIR, 'test_media')
+
+# Use TESTING_MEDIA_ROOT during tests
+if 'test' in sys.argv:
+    MEDIA_ROOT = TESTING_MEDIA_ROOT

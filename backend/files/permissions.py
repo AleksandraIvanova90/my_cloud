@@ -7,11 +7,8 @@ class IsOwnerOrAdmin(permissions.BasePermission):
     """
 
     def has_object_permission(self, request, view, obj):
-        # Администраторы имеют полный доступ
-        if request.user.is_admin:
+        if request.user.is_staff:
             return True
-
-        # Владелец файла имеет доступ
         return obj.user == request.user
 
 
@@ -25,12 +22,10 @@ class CanListFiles(permissions.BasePermission):
         return request.user.is_authenticated
 
     def has_object_permission(self, request, view, obj):
-        # obj это User
-        if request.user.is_admin:
+        if request.user.is_staff:
             if 'user_id' in request.query_params:
                 return True
             return True
-        # Только аутентифицированный пользователь может просматривать список своих файлов
         return obj == request.user
 
 
@@ -40,5 +35,4 @@ class CanDownloadViaLink(permissions.BasePermission):
     """
 
     def has_permission(self, request, view):
-        # Разрешаем всем, у кого есть ссылка
         return True
