@@ -1,12 +1,11 @@
 import logging
 
-from rest_framework import serializers
-from django.contrib.auth import get_user_model, authenticate
-from django.core.validators import RegexValidator
-
-
 from django.conf import settings
+from django.contrib.auth import authenticate, get_user_model
+from django.core.validators import RegexValidator
 from django.db import IntegrityError
+from rest_framework import serializers
+
 from files.models import File
 
 logger = logging.getLogger('users')

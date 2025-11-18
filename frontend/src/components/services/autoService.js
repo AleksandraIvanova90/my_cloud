@@ -1,5 +1,5 @@
 const login = async(username, password) => {
-  const response = await fetch('http://127.0.0.1:8000/api/users/login/', {
+  const response = await fetch('/api/users/login/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -16,7 +16,7 @@ const login = async(username, password) => {
 };
 
 const register = async(username, fullname, email, password) => {
-  const response = await fetch('http://127.0.0.1:8000/api/users/register/', {
+  const response = await fetch('/api/users/register/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

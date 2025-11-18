@@ -1,7 +1,7 @@
 const getFiles = async (userId) => {
   try {
     const token = localStorage.getItem('token');
-    let url = 'http://127.0.0.1:8000/api/files/list';
+    let url = '/api/files/list';
     if (userId) {
       url += `?user_id=${userId}`;  
     }
@@ -27,7 +27,7 @@ const getFiles = async (userId) => {
 const getFileData = async (id) => {   
   try {
     const token = localStorage.getItem('token');
-    const response = await fetch(`http://127.0.0.1:8000/api/files/${id}/`, { 
+    const response = await fetch(`/api/files/${id}/`, { 
       headers: {
         'Authorization': `Token ${token}`
       }
@@ -47,9 +47,8 @@ const getFileData = async (id) => {
 const uploadFile = async (formData) => {
 
   try {
-    console.log(formData);
     const token = localStorage.getItem('token');
-    const response = await fetch('http://127.0.0.1:8000/api/files/list/', {
+    const response = await fetch('/api/files/list/', {
       method: 'POST',
       headers: {
         'Authorization': `Token ${token}`
@@ -71,7 +70,7 @@ const uploadFile = async (formData) => {
 const renameFile = async (id, data) => {
   try {
     const token = localStorage.getItem('token');
-    const response = await fetch(`http://127.0.0.1:8000/api/files/${id}/rename/`, {
+    const response = await fetch(`/api/files/${id}/rename/`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -94,7 +93,7 @@ const renameFile = async (id, data) => {
 const editComment = async (id, data) => {
   try {
     const token = localStorage.getItem('token');
-    const response = await fetch(`http://127.0.0.1:8000/api/files/${id}/`, {
+    const response = await fetch(`/api/files/${id}/`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -117,7 +116,7 @@ const editComment = async (id, data) => {
 const deleteFile = async (id) => {
   try {
     const token = localStorage.getItem('token');
-    const response = await fetch(`http://127.0.0.1:8000/api/files/${id}/`, {
+    const response = await fetch(`/api/files/${id}/`, {
       method: 'DELETE',
       headers: {
         'Authorization': `Token ${token}`
@@ -139,7 +138,7 @@ const downloadFile = async (id) => {
   try {
     const token = localStorage.getItem('token');
     const currentUrl = encodeURIComponent(window.location.href); 
-    const downloadUrl = `http://127.0.0.1:8000/api/files/${id}/download/?return_url=${currentUrl}`;
+    const downloadUrl = `/api/files/${id}/download/?return_url=${currentUrl}`;
 
     const response = await fetch(downloadUrl, {  
       method: 'GET',
@@ -200,7 +199,7 @@ const downloadFile = async (id) => {
 const getSpecialLink = async (id) => {
   try {
     const token = localStorage.getItem('token');
-    const response = await fetch(`http://127.0.0.1:8000/api/files/${id}/special_link/`, {
+    const response = await fetch(`/api/files/${id}/special_link/`, {
       headers: {
         'Authorization': `Token ${token}`
       }

@@ -19,7 +19,7 @@ function Login() {
       const data = await login(username, password);
       setAuthInfo(data.token, data.user);
       if(data.user.is_staff) {
-        navigate('/admin');
+        navigate('/admin_panel');
       } else {
         navigate(`/files?user_id=${data.user.id}`);
       }
@@ -31,10 +31,10 @@ function Login() {
   return (
     <div className="container"> 
       <h2>Вход</h2>
+      {error && <ErrorMessage message={error} />}
       <form onSubmit={handleSubmit}>
-        {error && <ErrorMessage message={error} />}
         <div className="mb-3">
-          <label htmlFor="exampleInputEmail1" className="form-label">Логин</label>
+          <label htmlFor="username" className="form-label">Логин</label>
           <input 
             type="text" 
             className="form-control"  
@@ -46,7 +46,7 @@ function Login() {
           />
         </div>
         <div className="mb-3">
-          <label htmlFor="exampleInputPassword1" className="form-label">Пароль</label>
+          <label htmlFor="password" className="form-label">Пароль</label>
           <input 
             type="password" 
             className="form-control" 

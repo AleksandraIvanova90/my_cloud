@@ -1,7 +1,7 @@
 const getAllUsers = async () => {
   try {
     const token = localStorage.getItem('token');
-    const response = await fetch('http://127.0.0.1:8000/api/users/users',{
+    const response = await fetch('/api/users/users',{
       headers: {
         'Authorization': `Token ${token}`
       }
@@ -22,7 +22,7 @@ const getAllUsers = async () => {
 const deleteUser = async (id) => {
   try {
     const token = localStorage.getItem('token');
-    const response = await fetch(`http://127.0.0.1:8000/api/users/${id}/`, {
+    const response = await fetch(`/api/users/${id}/`, {
       method: 'DELETE',
       headers: {
         'Authorization': `Token ${token}`
@@ -43,7 +43,7 @@ const deleteUser = async (id) => {
 const updateUser = async (id, data) => {
   try {
     const token = localStorage.getItem('token');
-    const response = await fetch(`http://127.0.0.1:8000/api/users/${id}/`, {
+    const response = await fetch(`/api/users/${id}/`, {
       method: 'GET',
       headers: {
         'Authorization': `Token ${token}`
@@ -64,7 +64,7 @@ const updateUser = async (id, data) => {
 
     console.log(updateData);
 
-    const updateResponse = await fetch(`http://127.0.0.1:8000/api/users/${id}/`, {
+    const updateResponse = await fetch(`/api/users/${id}/`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

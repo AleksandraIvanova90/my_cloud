@@ -1,6 +1,7 @@
 import pytest
 from django.contrib.auth import get_user_model
 
+
 @pytest.mark.django_db
 def test_user_creation(create_user):
     user = create_user(username='testuser', password='password123', email='test@example.com', fullname='Test User')

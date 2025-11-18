@@ -1,10 +1,11 @@
+import logging
+import os
 
 import pytest
-import os
-import logging
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.urls import reverse
 from rest_framework import status
-from django.core.files.uploadedfile import SimpleUploadedFile
+
 from files.models import File
 
 logger = logging.getLogger(__name__)

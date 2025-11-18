@@ -12,23 +12,45 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 import os
 import sys
-
+import toml
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-# BASE_DIR = Path(__file__).resolve().parent.parent
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+print(BASE_DIR)
+
+# --- Загрузка настроек из TOML файла ---
+CONFIG_FILE = os.path.join(BASE_DIR, 'config.toml')
+
+if not os.path.exists(CONFIG_FILE):
+    raise FileNotFoundError(f"Configuration file not found: {CONFIG_FILE}")
+
+try:
+    with open(CONFIG_FILE, 'r') as f:
+        config = toml.load(f)
+except toml.TomlDecodeError as e:
+    raise ValueError(f"Error decoding TOML file: {e}")
+
+# Функции для безопасного получения значений
+def get_config_setting(section, key, default=None):
+    return config.get(section, {}).get(key, default)
+
+def get_config_setting_required(section, key):
+    value = get_config_setting(section, key)
+    if value is None:
+        raise ValueError(f"Missing required setting in config.toml: [{section}].{key}")
+    return value
+# --- Конец блока загрузки настроек из TOML файла ---
 
 
 # Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-#5xlinm^6#k3_n@kt6a-!iy#$8kl1ot=2d=z+xlfgr!31&e4w4'
+SECRET_KEY = get_config_setting_required('django', 'SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = get_config_setting('django', 'DEBUG', default=False)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = get_config_setting('django', 'ALLOWED_HOSTS', default=[])
 
 
 # Application definition
@@ -45,10 +67,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-   
 ]
 
-AUTH_USER_MODEL = 'users.User' 
+AUTH_USER_MODEL = 'users.User'
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -68,7 +89,6 @@ ROOT_URLCONF = 'backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -84,23 +104,16 @@ TEMPLATES = [
 WSGI_APPLICATION = 'backend.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "cloud_db",
-        "USER": "postgres",
-        "PASSWORD": "petr",
-        "HOST": "127.0.0.1",
-        "PORT": "5432",
+        "ENGINE": get_config_setting_required('database', 'ENGINE'),
+        "NAME": get_config_setting_required('database', 'NAME'),
+        "USER": get_config_setting_required('database', 'USER'),
+        "PASSWORD": get_config_setting_required('database', 'PASSWORD'),
+        "HOST": get_config_setting_required('database', 'HOST'),
+        "PORT": get_config_setting_required('database', 'PORT'),
     }
 }
-
-
-# Password validation
-# https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -118,9 +131,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/4.2/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -130,10 +140,8 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
-
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -142,31 +150,20 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
-    'DEFAULT_PAGINATION_CLASS': 
-        'rest_framework.pagination.PageNumberPagination',
-        'PAGE_SIZE': 100,
+    'DEFAULT_PAGINATION_CLASS': get_config_setting('rest_framework', 'DEFAULT_PAGINATION_CLASS',
+                                                default='rest_framework.pagination.PageNumberPagination'),
+    'PAGE_SIZE': get_config_setting('rest_framework', 'PAGE_SIZE', default=100),
 }
 
-CORS_ALLOWED_ORIGINS = ["http://localhost:5173"]
+CORS_ALLOWED_ORIGINS = get_config_setting('cors', 'ALLOWED_ORIGINS', default=[])
+CORS_ALLOW_CREDENTIALS = get_config_setting('cors', 'ALLOW_CREDENTIALS', default=False)
+CORS_ALLOW_HEADERS = get_config_setting('cors', 'ALLOW_HEADERS', default=[])
+CORS_EXPOSE_HEADERS = get_config_setting('cors', 'EXPOSE_HEADERS', default=[])
 
-CORS_ALLOW_CREDENTIALS = True
-
-CORS_ALLOW_HEADERS = [
-    'content-type', 
-    'authorization', 
-    'content-disposition'
-    ]
-CORS_EXPOSE_HEADERS = ['content-disposition']
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# FILE_STORAGE_PATH = os.path.join(BASE_DIR, 'file_storage')
-# os.makedirs(FILE_STORAGE_PATH, exist_ok=True)
-
-SITE_URL = 'http://127.0.0.1:8000'  # Use environment variables
+SITE_URL = get_config_setting('django', 'SITE_URL', default='http://127.0.0.1:8000')
 
 if not os.path.exists(os.path.join(BASE_DIR, 'logs')):
     os.makedirs(os.path.join(BASE_DIR, 'logs'))
@@ -191,10 +188,10 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'verbose'
         },
-         'file': {
+        'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'logs/debug.log'),  # Укажите путь к файлу
+            'filename': os.path.join(BASE_DIR, 'logs/debug.log'),
             'formatter': 'verbose'
         },
     },
@@ -204,14 +201,14 @@ LOGGING = {
             'level': 'INFO',
             'propagate': False,
         },
-        'users': {  # Логгер для users
+        'users': {
             'handlers': ['console', 'file'],
-            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),  # Уровень логирования из переменной окружения или INFO по умолчанию
-            'propagate': True,  # Передавать логи вышестоящим логгерам
+            'level': os.getenv('DJANGO_LOG_LEVEL', get_config_setting('logging.loggers.users', 'LEVEL', 'INFO')),
+            'propagate': True,
         },
-        'files': {  # Логгер для files
+        'files': {
             'handlers': ['console', 'file'],
-            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+            'level': os.getenv('DJANGO_LOG_LEVEL', get_config_setting('logging.loggers.files', 'LEVEL', 'INFO')),
             'propagate': True,
         },
     },
@@ -220,6 +217,5 @@ LOGGING = {
 
 TESTING_MEDIA_ROOT = os.path.join(BASE_DIR, 'test_media')
 
-# Use TESTING_MEDIA_ROOT during tests
 if 'test' in sys.argv:
     MEDIA_ROOT = TESTING_MEDIA_ROOT

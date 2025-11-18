@@ -43,7 +43,7 @@ function Navigation() {
       if (user?.is_staff === true) {
         navigationItems.push(
           <li className="nav-item" key="admin">
-            <Link className="nav-link" to="/admin">
+            <Link className="nav-link" to="/admin_panel">
               Список пользователей
             </Link>
           </li>

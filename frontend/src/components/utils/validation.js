@@ -1,3 +1,5 @@
+import React from 'react';
+
 const validateLogin = (login) => {
   if (!/^[a-zA-Z][a-zA-Z0-9]{3,19}$/.test(login)) {
     return 'Логин должен содержать только латинские буквы и цифры, начинаться с буквы и быть длиной от 4 до 20 символов.';

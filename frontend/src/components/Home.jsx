@@ -1,8 +1,10 @@
+import React from 'react';
+
 function Home() {
   return(
     <div className="container home-container">
       <h1 className="display-4">My Cloud: Ваше персональное облачное пространство</h1>
-      <p className="lead text">
+      <p className="lead text" data-testid="introductory-paragraph">
         <strong>My Cloud</strong> – это удобное и надежное облачное хранилище, разработанное, чтобы упростить управление вашими файлами. Получите доступ к своим документам, фотографиям, видео и другим файлам в любое время и в любом месте.
       </p>
       <h2>Возможности My Cloud:</h2>
@@ -22,7 +24,7 @@ function Home() {
         <li><span className="fw-bold">Защитить важные данные:</span> Защитите свои файлы от потери, поломки оборудования или кражи.</li>
         <li><span className="fw-bold">Освободить место на устройствах:</span> Переместите файлы в облако и освободите ценное место на вашем компьютере и телефоне.</li>
       </ul>
-      <p className="text">
+      <p className="text" data-testid="closing-paragraph">
         <strong>Начните использовать My Cloud сегодня и почувствуйте свободу доступа к своим файлам, где бы вы ни находились!</strong>
       </p>
     </div>

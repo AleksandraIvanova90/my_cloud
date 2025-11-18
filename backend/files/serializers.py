@@ -1,10 +1,12 @@
 import logging
-from rest_framework import serializers
-from .models import File
-from django.urls import reverse
+
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.core.exceptions import ImproperlyConfigured 
+from django.core.exceptions import ImproperlyConfigured
+from django.urls import reverse
+from rest_framework import serializers
+
+from .models import File
 
 logger = logging.getLogger('files')
 

@@ -1,7 +1,10 @@
 import pytest
-from users.serializers import UserSerializer, RegisterSerializer, LoginSerializer
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
+
+from users.serializers import (LoginSerializer, RegisterSerializer,
+                               UserSerializer)
+
 
 @pytest.mark.django_db
 def test_user_serializer(regular_user, test_file): 

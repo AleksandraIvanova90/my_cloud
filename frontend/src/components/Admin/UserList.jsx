@@ -10,11 +10,13 @@ function UserList() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [deleteUpdateError, setDeleteUpdateError] = useState('');
    
   const fetchUsers = async () => {
-    setLoading(true);
-    setError('');
+    
     try {
+      setLoading(true);
+      setError('');
       const data = await getAllUsers();
       setUsers(data);
     } catch (err) {
@@ -30,19 +32,22 @@ function UserList() {
   const handleDeleteUser = async (id) => {
     if (window.confirm('Вы уверены, что хотите удалить этого пользователя?')) {
       try {
+        setDeleteUpdateError(''); 
         await deleteUser(id);
         fetchUsers(); 
       } catch (err) {
-        setError('Не удалось удалить пользователя.');
+        setDeleteUpdateError('Не удалось удалить пользователя.');
       }
     }
   };
   const handleToggleAdmin = async (id, isAdmin) => {
     try {
+      setDeleteUpdateError('');
       await updateUser(id, { is_staff: !isAdmin });
       fetchUsers(); 
     } catch (err) {
-      setError('Не удалось изменить права пользователя.');
+
+      setDeleteUpdateError('Не удалось изменить права пользователя.');
     }
   };
   if (loading) {
@@ -55,6 +60,7 @@ function UserList() {
   return (
     <div className="container">
       <h2>Список пользователей</h2>
+      {deleteUpdateError && <ErrorMessage message={deleteUpdateError} />}
       <div className="table-responsive">
         <table className="table table-striped">
           <thead>

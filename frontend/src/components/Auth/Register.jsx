@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import {validateLogin, validateEmail, validatePassword} from '../ utils/validation.js';
 import ErrorMessage from '../common/ErrorMessage.jsx';
 import { register } from '../services/autoService.js';
+import { validateLogin, validateEmail, validatePassword }  from '../utils/validation';
 
 function Register() {
   const [username, setUsername] = useState('');
@@ -66,7 +66,7 @@ function Register() {
           />
         </div>
         <div className="mb-3">
-          <label className="form-label" htmlFor="femail">Email</label>
+          <label className="form-label" htmlFor="email">Email</label>
           <input 
             type="email" 
             id="email"

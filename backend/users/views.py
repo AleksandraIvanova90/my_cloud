@@ -1,19 +1,21 @@
 import logging
 import os
-import shutil 
-from rest_framework import generics, permissions, status
-from rest_framework.response import Response
-from rest_framework.authtoken.models import Token
-from rest_framework.permissions import IsAuthenticated
-from django.contrib.auth import get_user_model,logout
-from django.http import Http404
-from .serializers import UserSerializer, RegisterSerializer, LoginSerializer
-from .permissions import IsAdminUserOrReadOnly
+import shutil
 
-from rest_framework.decorators import api_view, permission_classes as view_permission_classes
-from django.utils import timezone
 from django.conf import settings
+from django.contrib.auth import get_user_model, logout
+from django.http import Http404
+from django.utils import timezone
+from rest_framework import generics, permissions, status
+from rest_framework.authtoken.models import Token
+from rest_framework.decorators import api_view
+from rest_framework.decorators import \
+    permission_classes as view_permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
+from .permissions import IsAdminUserOrReadOnly
+from .serializers import LoginSerializer, RegisterSerializer, UserSerializer
 
 logger = logging.getLogger('users')
 

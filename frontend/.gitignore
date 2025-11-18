@@ -22,3 +22,65 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Общие файлы и папки операционных систем
+.DS_Store
+Thumbs.db
+ehthumbs.db
+*.log
+*~
+*.swp
+.vscode/
+
+# Файлы и папки Node.js
+node_modules/
+package-lock.json
+yarn.lock
+npm-debug.log
+yarn-error.log
+.pnp*
+
+# Файлы сборки и dist
+dist/
+build/
+coverage/
+out/
+.next/
+.cache/
+*.map # Игнорировать sourcemaps - по желанию, может быть полезно для отладки продакшена
+
+# Конфигурационные файлы, содержащие секреты
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Локальные файлы IDE
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.user
+*.DS_Store
+*.bak
+
+# Специфические для Jest
+coverage/
+test-results.json
+
+# Специфические для Parcel
+.parcel-cache
+
+# Специфические для Webpack
+/public/bundles/  # Если Webpack складывает финальные бандлы в эту папку
+/static/bundles/
+
+# Прочее
+.eslintcache
+.stylelintcache
+.prettiercache
+
+# Папка для кэширования компонентов (если используется)
+.component-cache/

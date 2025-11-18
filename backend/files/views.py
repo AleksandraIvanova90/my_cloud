@@ -1,18 +1,20 @@
-import os
 import logging
-from rest_framework import generics, permissions, status, serializers
-from rest_framework.response import Response
-from rest_framework.decorators import api_view, permission_classes
-from django.shortcuts import get_object_or_404
-from django.http import FileResponse, Http404
+import os
+from urllib.parse import quote
 
 from django.conf import settings
-from django.utils import timezone
-from .models import File
-from .serializers import FileSerializer, FileUploadSerializer, FileUpdateSerializer, SpecialLinkSerializer
-from .permissions import IsOwnerOrAdmin, CanListFiles, CanDownloadViaLink
 from django.contrib.auth import get_user_model
-from urllib.parse import quote 
+from django.http import FileResponse, Http404
+from django.shortcuts import get_object_or_404
+from django.utils import timezone
+from rest_framework import generics, permissions, serializers, status
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.response import Response
+
+from .models import File
+from .permissions import CanDownloadViaLink, CanListFiles, IsOwnerOrAdmin
+from .serializers import (FileSerializer, FileUpdateSerializer,
+                          FileUploadSerializer, SpecialLinkSerializer)
 
 logger = logging.getLogger('files')
 

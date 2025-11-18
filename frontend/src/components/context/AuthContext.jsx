@@ -14,9 +14,11 @@ function AuthProvider({ children }) {
 
     if (storedToken && storedUser) {
       try {
-        const parsedUser = JSON.parse(storedUser);
-        setIsAuthenticated(true);
-        setUser(parsedUser);
+        if(storedUser) {
+          const parsedUser = JSON.parse(storedUser);
+          setIsAuthenticated(true);
+          setUser(parsedUser);
+        }
       } catch (error) {
         console.error('Ошибка при парсинге пользователя из localStorage:', error);
         localStorage.removeItem('token');

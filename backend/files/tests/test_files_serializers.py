@@ -1,7 +1,10 @@
 import pytest
 from django.core.files.uploadedfile import SimpleUploadedFile
+
 from files.models import File
-from files.serializers import FileSerializer, FileUploadSerializer, FileUpdateSerializer
+from files.serializers import (FileSerializer, FileUpdateSerializer,
+                               FileUploadSerializer)
+
 
 def test_file_serializer(test_file):
     serializer = FileSerializer(test_file)

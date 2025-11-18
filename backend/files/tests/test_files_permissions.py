@@ -1,11 +1,12 @@
 import pytest
 from django.contrib.auth import get_user_model
-from files.models import File
-from files.permissions import IsOwnerOrAdmin, CanListFiles
 from rest_framework.permissions import AllowAny
 from rest_framework.request import Request
-from rest_framework.views import APIView
 from rest_framework.test import APIRequestFactory
+from rest_framework.views import APIView
+
+from files.models import File
+from files.permissions import CanListFiles, IsOwnerOrAdmin
 
 User = get_user_model()
 

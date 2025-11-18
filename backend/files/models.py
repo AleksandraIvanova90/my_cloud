@@ -1,16 +1,19 @@
 import os
 import uuid
-from django.db import models
+
 from django.conf import settings
+from django.db import models
+
 
 def generate_unique_filename(instance, filename):
     ext = filename.split('.')[-1]
     filename = f'{uuid.uuid4().hex}.{ext}'
     return os.path.join(instance.user.storage_path, filename)
 
+
 class File(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    origin_name= models.CharField(max_length=255)
+    origin_name = models.CharField(max_length=255)
     file = models.FileField(upload_to=generate_unique_filename)
     comment = models.TextField(blank=True)
     size = models.PositiveIntegerField(default=0)
@@ -20,3 +23,4 @@ class File(models.Model):
 
     def __str__(self):
         return self.origin_name
+    

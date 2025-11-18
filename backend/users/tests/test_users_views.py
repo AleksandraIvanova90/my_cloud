@@ -1,8 +1,9 @@
 import pytest
+from django.contrib.auth import get_user_model
 from django.urls import reverse
 from rest_framework import status
-from django.contrib.auth import get_user_model
 from rest_framework.authtoken.models import Token
+
 
 @pytest.mark.django_db
 def test_user_list_unauthenticated(api_client):

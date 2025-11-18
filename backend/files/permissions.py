@@ -1,5 +1,5 @@
 from rest_framework import permissions
-from django.conf import settings
+
 
 class IsOwnerOrAdmin(permissions.BasePermission):
     """

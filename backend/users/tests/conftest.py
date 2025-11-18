@@ -1,11 +1,15 @@
+import os
+import shutil
+
 import pytest
-from django.contrib.auth import get_user_model
-from rest_framework.test import APIClient
-from users.models import User
-from files.models import File
-from django.core.files.uploadedfile import SimpleUploadedFile
 from django.conf import settings
-import os, shutil
+from django.contrib.auth import get_user_model
+from django.core.files.uploadedfile import SimpleUploadedFile
+from rest_framework.test import APIClient
+
+from files.models import File
+from users.models import User
+
 
 @pytest.fixture
 def api_client():

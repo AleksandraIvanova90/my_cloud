@@ -14,6 +14,7 @@ export default defineConfig([
       'dist/',        
       'build/',      
       '*.config.js',   
+      '*.config.cjs',  
       '**/*.test.js',  
       '**/*.test.jsx',
       '**/*.spec.js',

@@ -1,3 +1,4 @@
+import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 
 import './App.css';
@@ -23,7 +24,7 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
-                <Route path="/admin" element={<RequireAuth roles={[true]}><UserList /></RequireAuth>} />
+                <Route path="/admin_panel" element={<RequireAuth roles={[true]}><UserList /></RequireAuth>} />
                 <Route path="/files" element={<RequireAuth><FileList /></RequireAuth>} /> 
                 <Route path="/files/:id/edit" element={<RequireAuth><FileEdit /></RequireAuth>} /> 
                 <Route path="/files/:id/special_link" element={<RequireAuth><SpecialLink /></RequireAuth>} />
