@@ -1,6 +1,10 @@
 file_storage/
 __pycache__/
 __pycache__
+user_files/
+logs/
+venv/
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

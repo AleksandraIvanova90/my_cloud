@@ -1,16 +1,13 @@
 [django]
 SECRET_KEY = ''
-DEBUG = true
+DEBUG =true
 # Перечисляем разрешенные хосты
-ALLOWED_HOSTS = [
-    "localhost",
-    "127.0.0.1"
-]
-SITE_URL = 'http://127.0.0.1:8000'
+ALLOWED_HOSTS = []
+SITE_URL = ''
 
 [database]
 ENGINE = "django.db.backends.postgresql"
-NAME = ""
+NAME = "c"
 USER = ""
 PASSWORD = ""
 HOST = "127.0.0.1"
@@ -18,16 +15,19 @@ PORT = "5432"
 
 [cors]
 # Перечисляем разрешенные источники CORS
-ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000"
-]
+ALLOWED_ORIGINS = []
 ALLOW_CREDENTIALS = true
 # Перечисляем заголовки, которые разрешено передавать
 ALLOW_HEADERS = [
-    'content-type',
+'accept',
+    'accept-encoding',
     'authorization',
-    'content-disposition'
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
 ]
 # Перечисляем заголовки, которые разрешено выставлять в ответе
 EXPOSE_HEADERS = ['content-disposition']
@@ -37,7 +37,7 @@ DEFAULT_PAGINATION_CLASS = 'rest_framework.pagination.PageNumberPagination'
 PAGE_SIZE = 100
 
 [logging.loggers.users]
-LEVEL = 'INFO' 
+LEVEL = 'INFO'
 
 [logging.loggers.files]
-LEVEL = 'INFO' 
+LEVEL = 'INFO'
