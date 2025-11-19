@@ -1,6 +1,7 @@
 file_storage/
 __pycache__/
 __pycache__
+user_files
 user_files/
 logs/
 venv/
