@@ -17,8 +17,6 @@ import toml
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-print(BASE_DIR)
-
 # --- Загрузка настроек из TOML файла ---
 CONFIG_FILE = os.path.join(BASE_DIR, 'config.toml')
 
@@ -160,6 +158,8 @@ CORS_ALLOW_CREDENTIALS = get_config_setting('cors', 'ALLOW_CREDENTIALS', default
 CORS_ALLOW_HEADERS = get_config_setting('cors', 'ALLOW_HEADERS', default=[])
 CORS_EXPOSE_HEADERS = get_config_setting('cors', 'EXPOSE_HEADERS', default=[])
 
+SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin-allow-popups"
+SECURE_CROSS_ORIGIN_EMBEDDER_POLICY = "credentialless"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 

@@ -1,0 +1,22 @@
+[run]
+source = .
+omit =
+    */__init__.py
+    backend/asgi.py
+    backend/wsgi.py
+    manage.py
+    */migrations/*
+    */venv/*
+
+[report]
+exclude_lines =
+    pragma: no cover
+    def __str__
+    if __name__ == '__main__'
+    raise AssertionError
+    raise NotImplementedError
+    if TYPE_CHECKING: 
+
+ignore_errors = True
+
+show_missing = True

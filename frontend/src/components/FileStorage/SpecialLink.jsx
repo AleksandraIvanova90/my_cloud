@@ -36,17 +36,19 @@ const SpecialLink = () => {
     navigate(`/files?user_id=${userId}`); 
   };
 
-  const handleCopyClick = () => {
-    navigator.clipboard.writeText(specialLink)
-      .then(() => {
-        alert('Ссылка скопирована в буфер обмена!');
-      })
-      .catch(err => {
-        console.error('Не удалось скопировать ссылку: ', err);
-        setError('Не удалось скопировать ссылку: проблемы с буфером обмена.');
-      });
+  const handleCopyClick = async () => {
+  
+    if (navigator.clipboard) {
+      try {
+        await navigator.clipboard.writeText(specialLink);
+        console.log('Текст скопирован в буфер обмена');
+      } catch (err) {
+        console.error('Не удалось скопировать текст: ', err);
+      }
+    } else {
+      console.error('API Clipboard не поддерживается в этом браузере');
+    }
   };
-
   if (loading) {
     return <p>Загрузка...</p>;
   }

@@ -60,6 +60,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         )]
     )
     email = serializers.EmailField(required=True)
+    fullname = serializers.CharField(required=False, allow_blank=True) 
 
     class Meta:
         model = User

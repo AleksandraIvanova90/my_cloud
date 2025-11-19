@@ -62,8 +62,7 @@ const updateUser = async (id, data) => {
       username: user.username 
     };
 
-    console.log(updateData);
-
+    
     const updateResponse = await fetch(`/api/users/${id}/`, {
       method: 'PUT',
       headers: {

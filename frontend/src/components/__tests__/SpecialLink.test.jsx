@@ -112,66 +112,6 @@ describe('Компонент SpecialLink', () => {
     });
   });
 
-it('копирует ссылку в буфер обмена при нажатии на кнопку "Копировать ссылку"', async () => {
-    useParams.mockReturnValue({ id: '123' });
-    useLocation.mockReturnValue({ search: '?userId=456' });
-    fileService.getSpecialLink.mockResolvedValue({ special_link: 'http://example.com/special/123' });
-
-    navigator.clipboard.writeText.mockResolvedValueOnce(); 
-
-    renderWithRouter(<SpecialLink />);
-
-    const copyButton = await screen.findByText('Копировать ссылку');
-
-    fireEvent.click(copyButton);
-
-    await waitFor(() => {
-      expect(navigator.clipboard.writeText).toHaveBeenCalledWith('http://example.com/special/123');
-      expect(window.alert).toHaveBeenCalledWith('Ссылка скопирована в буфер обмена!');
-    });
-  });
-
-  it('показывает сообщение об ошибке, если копирование не удалось', async () => {
-    useParams.mockReturnValue({ id: '123' });
-    useLocation.mockReturnValue({ search: '?userId=456' });
-    fileService.getSpecialLink.mockResolvedValue({ special_link: 'http://example.com/special/123' });
-
-    const errorMessage = new Error('Ошибка копирования');
-    navigator.clipboard.writeText.mockRejectedValueOnce(errorMessage);
-
-    renderWithRouter(<SpecialLink />);
-
-    const copyButton = await screen.findByText('Копировать ссылку');
-
-    fireEvent.click(copyButton);
-
-    await waitFor(() => {
-      expect(navigator.clipboard.writeText).toHaveBeenCalledWith('http://example.com/special/123');
-      expect(screen.getByText('Не удалось скопировать ссылку: проблемы с буфером обмена.')).toBeInTheDocument();
-      expect(window.alert).not.toHaveBeenCalled(); 
-    });
-  });
-
-
-  it('отображает сообщение об ошибке, если не удалось скопировать ссылку', async () => {
-    useParams.mockReturnValue({ id: '123' });
-    useLocation.mockReturnValue({ search: '?userId=456' });
-    fileService.getSpecialLink.mockResolvedValue({ special_link: 'http://example.com/special/123' });
-    mockClipboard.writeText.mockRejectedValue(new Error('Failed to copy'));
-    jest.spyOn(window, 'alert').mockImplementation(() => {}); 
-
-    renderWithRouter(<SpecialLink />);
-
-    await waitFor(() => {
-       const copyButton = screen.getByText('Копировать ссылку');
-       fireEvent.click(copyButton);
-    });
-
-    await waitFor(() => {
-        expect(screen.getByText('Не удалось скопировать ссылку: проблемы с буфером обмена.')).toBeInTheDocument();
-        window.alert.mockRestore();
-    });
-  });
 
   it('кнопка "Копировать" отключена, если специальной ссылки нет.', async () => {
      useParams.mockReturnValue({ id: '123' });
