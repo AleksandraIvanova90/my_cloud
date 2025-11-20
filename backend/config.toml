@@ -7,7 +7,7 @@ SITE_URL = ''
 
 [database]
 ENGINE = "django.db.backends.postgresql"
-NAME = "c"
+NAME = ""
 USER = ""
 PASSWORD = ""
 HOST = "127.0.0.1"
