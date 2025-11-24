@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, {useState} from 'react';
 
 import ErrorMessage from '../common/ErrorMessage';
@@ -41,6 +42,7 @@ function FileUpload({onUpload, id}) {
       <div className="mb-3">
         <label htmlFor='file' className="form-label">Файл:</label>
         <input type="file" className="form-control" id='file' onChange={handleFileChange} />
+        <div className="form-text">Размер файла не должен превышать 10MB</div>
       </div>
       <div className="mb-3">
         <label htmlFor='comment' className="form-label">Комментарий:</label>
@@ -50,5 +52,10 @@ function FileUpload({onUpload, id}) {
     </form>
   );
 }
+
+FileUpload.propTypes = {
+  onUpload: PropTypes.func.isRequired,
+  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+};
 
 export default FileUpload;

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -46,7 +47,6 @@ function UserList() {
       await updateUser(id, { is_staff: !isAdmin });
       fetchUsers(); 
     } catch (err) {
-
       setDeleteUpdateError('Не удалось изменить права пользователя.');
     }
   };
@@ -107,4 +107,19 @@ function UserList() {
     </div>
   );
 }
+
+const userPropTypes = PropTypes.shape({
+  id: PropTypes.number.isRequired,
+  username: PropTypes.string.isRequired,
+  fullname: PropTypes.string,
+  email: PropTypes.string.isRequired,
+  is_staff: PropTypes.bool.isRequired,
+  file_count: PropTypes.number,
+  total_size: PropTypes.number,
+});
+
+UserList.propTypes = {
+  users: PropTypes.arrayOf(userPropTypes).isRequired, 
+};
+
 export default UserList;

@@ -15,7 +15,13 @@ const getFiles = async (userId) => {
       const message = await response.text();
       throw new Error(message || 'Не удалось получить список файлов.');
     }
-    return await response.json();
+
+    try {
+      return await response.json();
+    } catch (jsonError) {
+      console.error('Ошибка при парсинге JSON:', jsonError);
+      throw new Error('Не удалось обработать ответ сервера.');
+    }
 
   } catch (error) {
     console.error('Ошибка при получении списка файлов:', error);
@@ -36,10 +42,16 @@ const getFileData = async (id) => {
       const message = await response.text();
       throw new Error(message || 'Не удалось получить данные файла.');
     }
-    return await response.json();
+
+    try {
+      return await response.json();
+    } catch (jsonError) {
+      console.error('Ошибка при парсинге JSON:', jsonError);
+      throw new Error('Не удалось обработать ответ сервера.');
+    }
                
   } catch (error) {
-    console.error('Ошибка при получении данныч файла:', error);
+    console.error('Ошибка при получении данных файла:', error);
     throw error;
   }
 };
@@ -60,7 +72,12 @@ const uploadFile = async (formData) => {
       const message = await response.text();
       throw new Error(message || 'Не удалось загрузить файл.');
     }
-    return await response.json();
+    try {
+      return await response.json();
+    } catch (jsonError) {
+      console.error('Ошибка при парсинге JSON:', jsonError);
+      throw new Error('Не удалось обработать ответ сервера.');
+    }
   } catch (error) {
     console.error('Ошибка при загрузке файла:', error);
     throw error;
@@ -83,7 +100,12 @@ const renameFile = async (id, data) => {
       const message = await response.text();
       throw new Error(message || 'Не удалось изменить имя файла.');
     }
-    return await response.json();
+    try {
+      return await response.json();
+    } catch (jsonError) {
+      console.error('Ошибка при парсинге JSON:', jsonError);
+      throw new Error('Не удалось обработать ответ сервера.');
+    }
   } catch (error) {
     console.error('Ошибка при изменении имени файла:', error);
     throw error;
@@ -106,7 +128,12 @@ const editComment = async (id, data) => {
       const message = await response.text();
       throw new Error(message || 'Не удалось изменить комментарий.');
     }
-    return await response.json();
+    try {
+      return await response.json();
+    } catch (jsonError) {
+      console.error('Ошибка при парсинге JSON:', jsonError);
+      throw new Error('Не удалось обработать ответ сервера.');
+    }
   } catch (error) {
     console.error('Ошибка при изменении комментарии:', error);
     throw error;
@@ -207,9 +234,14 @@ const getSpecialLink = async (id) => {
 
     if (!response.ok) {
       const message = await response.text();
-      throw new Error(message || 'Не удалось пполучить специальную ссылку.');
+      throw new Error(message || 'Не удалось получить специальную ссылку.');
     }
-    return await response.json();
+    try {
+      return await response.json();
+    } catch (jsonError) {
+      console.error('Ошибка при парсинге JSON:', jsonError);
+      throw new Error('Не удалось обработать ответ сервера.');
+    }
                
   } catch (error) {
     console.error('Ошибка при получении специальной ссылки:', error);

@@ -20,6 +20,7 @@ function FileList() {
   const location = useLocation(); 
   const params = new URLSearchParams(location.search); 
   const userId = params.get('user_id'); 
+  
   const fetchFiles = async () => {
     setLoading(true);
     setError('');

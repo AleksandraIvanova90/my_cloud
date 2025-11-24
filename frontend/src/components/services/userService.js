@@ -11,7 +11,13 @@ const getAllUsers = async () => {
       const message = await response.text();
       throw new Error(message || 'Не удалось получить список пользователей.');
     }
-    return await response.json();
+    try {
+      return await response.json();
+    } catch (jsonError) {
+      console.error('Ошибка при парсинге JSON:', jsonError);
+      throw new Error('Не удалось обработать ответ сервера.');
+    }
+
   } catch (error) {
     console.error('Ошибка при получении списка пользователей:', error);
     throw error;

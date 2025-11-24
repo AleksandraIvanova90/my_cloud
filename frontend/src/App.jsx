@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 
@@ -47,6 +48,13 @@ function RequireAuth({ children, roles }) {
     return <Navigate to="/" />;
   }
   return children;
+
 }
+
+
+RequireAuth.propTypes = {
+  children: PropTypes.node.isRequired, 
+  roles: PropTypes.arrayOf(PropTypes.bool), 
+};
 export default App;
 

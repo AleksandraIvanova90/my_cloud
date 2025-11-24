@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -166,5 +167,16 @@ function Navigation() {
     </nav>
   );
 }
+
+Navigation.propTypes = {
+  isAuthenticated: PropTypes.bool.isRequired,
+  logout: PropTypes.func.isRequired,
+  user: PropTypes.shape({
+    id: PropTypes.number,
+    username: PropTypes.string.isRequired,
+    email: PropTypes.string,
+    is_staff: PropTypes.bool,
+  }),
+};
 
 export default Navigation;

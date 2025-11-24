@@ -1,6 +1,6 @@
 [django]
 SECRET_KEY = ''
-DEBUG =true
+DEBUG = true
 # Перечисляем разрешенные хосты
 ALLOWED_HOSTS = []
 SITE_URL = ''
@@ -19,7 +19,7 @@ ALLOWED_ORIGINS = []
 ALLOW_CREDENTIALS = true
 # Перечисляем заголовки, которые разрешено передавать
 ALLOW_HEADERS = [
-'accept',
+    'accept',
     'accept-encoding',
     'authorization',
     'content-type',

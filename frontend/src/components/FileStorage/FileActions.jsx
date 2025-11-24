@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -42,5 +43,22 @@ function FileActions({ file, onDelete , onDownload, userId}) {
   );
 
 }
+
+FileActions.propTypes = {
+  file: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    user: PropTypes.number.isRequired, 
+    origin_name: PropTypes.string.isRequired,
+    file: PropTypes.string.isRequired, 
+    comment: PropTypes.string,
+    size: PropTypes.number.isRequired,
+    upload_date: PropTypes.string.isRequired, 
+    last_download_date: PropTypes.string, 
+    special_link: PropTypes.string.isRequired,
+  }).isRequired,
+  onDelete: PropTypes.func.isRequired,
+  onDownload: PropTypes.func.isRequired,
+  userId: PropTypes.number.isRequired,
+};
 
 export default FileActions;
